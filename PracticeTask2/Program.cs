@@ -86,7 +86,7 @@ namespace PracticeTask2
             Console.WriteLine($"\n\nНаймісткіше приміщення: {maxAreaRoom}");
             Console.WriteLine($"Найбільша площа на одного студента: {maxPlacePerStudentRoom}");
             Console.WriteLine(projectorResult ? "У всіх лекційних аудиторіях є проектор." : "Не у всіх лекційних аудиторіях є проектор.");
-            //Console.WriteLine("\nПриміщення на другому поверсі:");
+            Console.WriteLine("\nПриміщення на другому поверсі:");
             foreach (StudyingRoom room in secondFloor)
             {
                 Console.WriteLine(room);
