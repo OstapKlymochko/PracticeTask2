@@ -2,36 +2,33 @@
 
 namespace PracticeTask2
 {
-    class StudyingRoom: IComparable<StudyingRoom>
+    abstract class StudyingRoom: IComparable
     {
         protected string roomNumber;
-        protected uint capacity;
+        abstract public uint Capacity { get; init; }
         protected uint area;
-        protected double areaPerStudent;
+        abstract public double AreaPerStudent { get; init; }
         private bool containsProjector = false;
 
+        protected abstract double calculateAreaPerStudent();
         public StudyingRoom()
         {
             this.roomNumber = "A-000";
-            this.capacity = 0;
             this.area = 0;
-            this.areaPerStudent = 0.0;
         }
-        public StudyingRoom(string _rNum, uint _rCap, uint _rArea)
+        public StudyingRoom(string _rNum, uint _rArea)
         {
             this.roomNumber= _rNum;
-            this.capacity = _rCap;
             this.area = _rArea;
-            this.areaPerStudent = _rArea / _rCap;
         }
         public override string ToString()
         {
-            return $"{roomNumber}. {area} м^2. {capacity} Студентів. {areaPerStudent} м^2 на одного студента.";
+            return $"{this.roomNumber}. {this.area} м^2. {this.Capacity} Студентів. {this.AreaPerStudent} м^2 на одного студента.";
         }
         public override bool Equals(object obj)
         {
             StudyingRoom S = obj as StudyingRoom;
-            return this.area == S.area && this.capacity == S.capacity;
+            return this.roomNumber == S.roomNumber && this.area == S.area && this.Capacity == S.Capacity;
         }
         public override int GetHashCode()
         {
@@ -45,9 +42,10 @@ namespace PracticeTask2
         {
             return !left.Equals(right);
         }
-        public int CompareTo(StudyingRoom S)
+        public int CompareTo(object obj)
         {
-            int res = (int)this.area - (int)S.area;
+            StudyingRoom S = obj as StudyingRoom;
+            int res = (int)this.Capacity - (int)S.Capacity;
          
             if(res == 0)
             {
@@ -71,13 +69,6 @@ namespace PracticeTask2
             return left.CompareTo(right) < 0;
         }
        
-        public double AreaPerStudent
-        {
-            get
-            {
-                return this.areaPerStudent;
-            }
-        }
         public string RoomNumber
         {
             get
@@ -96,16 +87,10 @@ namespace PracticeTask2
         {
             get
             {
-                return this.capacity >= 12;
+                return this.Capacity >= 12;
             }
         }
-        public uint Capacity
-        {
-            get
-            {
-                return this.capacity;
-            }
-        }
+     
         public bool ContainsProjector
         {
             get
