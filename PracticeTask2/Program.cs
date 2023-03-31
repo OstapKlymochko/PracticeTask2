@@ -7,19 +7,14 @@ namespace PracticeTask2
 	{
 		static void Main()
 		{
+			Student student = new Student();
 			ComputerClass k = new ComputerClass("A-270", 40, 16, "Soft Serve Lab", 10);
-			k.InstallProjector();
 			ComputerClass k1 = new ComputerClass("A-115", 45, 20, "N-ix Lab", 15);
 			ComputerClass k2 = new ComputerClass("A-120", 45, 20, string.Empty, 15);
-			Console.WriteLine(k2);
-			k.InstallProjector();
 			Classroom c = new Classroom("A-265", 30, 3, 3, "Стефана Баха");
 			Classroom c1 = new Classroom("A-439", 200, 30, 0, string.Empty);
-			c1.InstallProjector();
 			Classroom c2 = new Classroom("A-216", 200, 35, 5, string.Empty);
-			c2.InstallProjector();
 			Classroom c3 = new Classroom("A-263", 30, 0, 10, string.Empty);
-
 			List<StudyingRoom> arr = new List<StudyingRoom>
 			{
 				k,
@@ -30,6 +25,18 @@ namespace PracticeTask2
 				c1,
 				c
 			};
+			foreach (StudyingRoom room in arr)
+			{
+				room.lessonStarted += student.onLessonStarted;
+				room.lessonEnded += student.onLessonEnded;
+				room.projectorInstalled += Program.onProjectorInstalled;
+				room.projectorUnInstalled += Program.onProjectorUnInstalled;
+
+
+			}
+			k.InstallProjector();
+			c1.InstallProjector();
+			c2.InstallProjector();
 			Console.Write("Додати нового користувача?(так або ні) ");
 			string choice = Console.ReadLine();
 			switch (choice)
@@ -137,6 +144,29 @@ namespace PracticeTask2
 			Console.WriteLine(arr[arr.Count - 2]);
 			Console.WriteLine(arr[arr.Count - 3]);
 
+			arr[0].RemoveProjector();
+
+			StudyingRoom randClassroom = arr[genereteRandom(0, arr.Count - 1)];
+			randClassroom.startLesson();
+			randClassroom.endLesson();
+			randClassroom = arr[genereteRandom(0, arr.Count - 1)];
+			randClassroom.startLesson();
+			randClassroom.endLesson();
+			randClassroom = arr[genereteRandom(0, arr.Count - 1)];
+			randClassroom.startLesson();
+			randClassroom.endLesson();
+		}
+		public static void onProjectorInstalled(object sender)
+		{
+            Console.WriteLine($"Проектор встановлено до аудиторiї {(sender as StudyingRoom).RoomNumber}");
+        }
+		public static void onProjectorUnInstalled(object sender)
+		{
+			Console.WriteLine($"Проектор забрали з аудиторiї {(sender as StudyingRoom).RoomNumber}");
+		}
+		public static int genereteRandom(int min, int max)
+		{
+			return new Random().Next(min, max);
 		}
 	}
-	}
+}

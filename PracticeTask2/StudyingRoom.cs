@@ -2,7 +2,7 @@
 
 namespace PracticeTask2
 {
-    abstract class StudyingRoom: IComparable
+    abstract class StudyingRoom : IComparable
     {
         protected string roomNumber;
         abstract public uint Capacity { get; init; }
@@ -10,7 +10,15 @@ namespace PracticeTask2
         abstract public double AreaPerStudent { get; init; }
         private bool containsProjector = false;
 
-        protected abstract double calculateAreaPerStudent();
+		public delegate void MyEvent(object sender);
+
+		public event MyEvent projectorInstalled;
+		public event MyEvent projectorUnInstalled;
+
+		public event MyEvent lessonStarted;
+		public event MyEvent lessonEnded;
+
+		protected abstract double calculateAreaPerStudent();
         public StudyingRoom()
         {
             this.roomNumber = "A-000";
@@ -98,13 +106,36 @@ namespace PracticeTask2
                 return containsProjector;
             }
         }
-        public void InstallProjector()
+		public void startLesson()
+		{
+			if (lessonStarted != null)
+			{
+				lessonStarted(this);
+			}
+		}
+		public void endLesson()
+		{
+			if (lessonStarted != null)
+			{
+				lessonEnded(this);
+			}
+		}
+
+		public void InstallProjector()
         {
-            this.containsProjector = true;
+			if (projectorInstalled != null)
+			{
+				projectorInstalled(this);
+			}
+			this.containsProjector = true;
         }
         public void RemoveProjector()
         {
-            this.containsProjector = false;
+			if (projectorUnInstalled != null)
+			{
+				projectorUnInstalled(this);
+			}
+			this.containsProjector = false;
         }
 
     }
